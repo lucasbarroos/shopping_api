@@ -1,8 +1,13 @@
-import { Controller, Post, Put, Get, Body, Param } from '@nestjs/common';
-import { productDTO } from './products.interface';
-
+import { Controller, Post, Put, Get, Body, Param, Injectable, Inject } from '@nestjs/common';
+import { Model } from 'mongoose';
+import { productInterface } from './products.interface';
+import { productDTO } from './products.dto';
 @Controller('products')
 export class ProductsController {
+    constructor(
+        @Inject('PRODUCT_MODEL')
+        private productModel: Model<productInterface>
+    ) {}
 
     @Post()
     create(@Body() product: productDTO): String {

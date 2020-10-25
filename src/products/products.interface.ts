@@ -1,5 +1,6 @@
-export class productDTO {
-    name: string;
-    brand: string;
-    amount: number;
+import { Document } from 'mongoose';
+export interface productInterface extends Document {
+    readonly name: string;
+    readonly brand: string;
+    readonly amount: number;
 }
