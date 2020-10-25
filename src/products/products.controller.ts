@@ -10,26 +10,37 @@ export class ProductsController {
     ) {}
 
     @Post()
-    create(@Body() product: productDTO): String {
+    async create(@Body() product: productDTO): Promise<productDTO> {
         const { name, brand, amount } = product;
-
-        return `Product ${name} (${brand}) created`;
+        const productCreated = await this.productModel.create({ name, brand, amount });
+        return productCreated;
     }
 
     @Put(':id')
-    update(@Param('id') id: string, @Body() product: productDTO): String {
+    async update(@Param('id') id: string, @Body() product: productDTO): Promise<productDTO> {
         const { name, brand, amount } = product;
-
-        return `Product ${name} (${brand}) updated`;
+        const productUpdated = this.productModel.findOneAndUpdate({
+            _id: id,
+        }, {
+            name,
+            brand,
+            amount,
+        }, {
+            new: true,
+        });
+        return productUpdated;
     }
 
     @Get(':id')
-    findOne(@Param('id') id): String {
-        return `You are searching by ${id}`;
+    async findOne(@Param('id') id): Promise<productDTO> {
+        const product = this.productModel.findById(id);        
+        return product;
     }
 
     @Get()
-    findAll(): Array<String> {
-        return ['Nike', 'Adidas'];
+    async findAll(): Promise<Array<productDTO>> {
+        const products = this.productModel.find();
+
+        return products;
     }
 }
