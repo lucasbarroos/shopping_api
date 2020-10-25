@@ -1,10 +1,9 @@
-import { Controller, Get, Req } from '@nestjs/common';
-import { Request } from 'express';
+import { Controller, Get } from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
     @Get('/')
-    findAll(@Req() request: Request): string {
-        return 'Here you are, your users!';
+    findAll(): Array<string> {
+        return ['Lucas', 'Victoria', 'Miles', 'Flora'];
     }
 }
