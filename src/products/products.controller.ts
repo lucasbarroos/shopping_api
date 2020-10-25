@@ -1,5 +1,5 @@
 import { Controller, Post, Put, Get, Body, Param } from '@nestjs/common';
-import { productDTO } from './products.dto';
+import { productDTO } from './products.interface';
 
 @Controller('products')
 export class ProductsController {
