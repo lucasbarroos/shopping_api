@@ -6,14 +6,14 @@ export class ProductsController {
 
     @Post()
     create(@Body() product: productDTO): String {
-        const { name, brand } = product;
+        const { name, brand, amount } = product;
 
         return `Product ${name} (${brand}) created`;
     }
 
     @Put(':id')
     update(@Param('id') id: string, @Body() product: productDTO): String {
-        const { name, brand } = product;
+        const { name, brand, amount } = product;
 
         return `Product ${name} (${brand}) updated`;
     }
