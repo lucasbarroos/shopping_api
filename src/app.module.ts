@@ -5,8 +5,10 @@ import { ProductsModule } from './products/products.module';
 import { DatabaseModule } from './database/database.module';
 import { databaseProviders } from './database/database.providers';
 
-const multerModule = MulterModule.register({
-  dest: './uploads',
+const multerModule = MulterModule.registerAsync({
+  useFactory: () => ({
+    dest: './uploads',
+  }),
 });
 
 @Module({

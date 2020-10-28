@@ -1,4 +1,4 @@
-import { Controller, Post, Put, Get, Body, Param, Inject, UseInterceptors, UploadedFile, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Put, Get, Body, Param, Inject, UseInterceptors, UploadedFile, HttpStatus, Patch } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -47,17 +47,17 @@ export class ProductsController {
         return products;
     }
 
-    @Post(':id/avatar')
-    @UseInterceptors(FileInterceptor('avatar', {
+    @Patch(':id/avatar')
+    @UseInterceptors(FileInterceptor('image', {
         storage: diskStorage({
             destination: './uploads',
             filename: editFileName,
         }),
         fileFilter: imageFileFilter,
     }))
-    async pictureUpload(@UploadedFile() avatar, @Param('id') id): Promise<any> {
+    async pictureUpload(@UploadedFile() image: any, @Param('id') id: string): Promise<any> {
         console.log(id);
-        console.log(avatar);
+        console.log(image);
 
         return {
             status: HttpStatus.OK,
