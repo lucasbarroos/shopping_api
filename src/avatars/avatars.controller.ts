@@ -1,7 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Type } from '@nestjs/common';
 import { Param, Inject, UseInterceptors, UploadedFile, HttpStatus, Post } from '@nestjs/common';
 import {  FileInterceptor } from '@nestjs/platform-express';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { diskStorage } from 'multer';
 import { editFileName, imageFileFilter } from '../../utils/file_upload';
 import { avatarInterface } from './avatars.interface';
@@ -23,6 +23,12 @@ export class AvatarsController {
         return avatars;
     }
 
+    @Get(':id')
+    async findById(@Param('id') id): Promise<avatarInterface> {
+        const avatar = await this.avatarModel.findById(id);
+        return avatar;
+    }
+
     @Post()
     @UseInterceptors(FileInterceptor('image', {
         storage: diskStorage({
@@ -32,15 +38,21 @@ export class AvatarsController {
         fileFilter: imageFileFilter,
     }))
     async create(@UploadedFile() image: any): Promise<any> {
-        const { } = image;
-        console.log(image);
-        // const avatar = this.avatarModel.create({
+        const { originalname, filename, mimetype, path, size  } = image;
+        const obj = {
+            originalName: originalname, 
+            filename,
+            type: mimetype,
+            path,
+            size,
+        };
 
-        // });
+        const avatar = await this.avatarModel.create(obj);
 
         return {
             status: HttpStatus.OK,
             message: 'Image uploaded successfully!',
+            avatar,
         };
     }
 }
