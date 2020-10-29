@@ -1,10 +1,10 @@
 import { Connection } from 'mongoose';
-import { ProductSchema } from '../products/products.schema';
+import { AvatarsSchema } from '../avatars/avatars.schema';
 
 export const avatarProvider= [
     {
-        provide: 'PRODUCT_MODEL',
-        useFactory: (connection: Connection) => connection.model('Products', ProductSchema),
+        provide: 'AVATAR_MODEL',
+        useFactory: (connection: Connection) => connection.model('Avatars', AvatarsSchema),
         inject: ['DATABASE_CONNECTION'],
     }
 ]

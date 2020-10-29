@@ -1,19 +1,29 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { Param, Inject, UseInterceptors, UploadedFile, HttpStatus, Post } from '@nestjs/common';
 import {  FileInterceptor } from '@nestjs/platform-express';
 import { Model } from 'mongoose';
 import { diskStorage } from 'multer';
 import { editFileName, imageFileFilter } from '../../utils/file_upload';
+import { avatarInterface } from './avatars.interface';
 import { productInterface } from '../products/products.interface';
 
 @Controller('avatars')
 export class AvatarsController {
     constructor(
+        @Inject('AVATAR_MODEL')
+        private avatarModel: Model<avatarInterface>,
         @Inject('PRODUCT_MODEL')
         private productModel: Model<productInterface>
     ) { }
 
-    @Post(':id')
+    @Get()
+    async show(): Promise<Array<avatarInterface>> {
+        const avatars = this.avatarModel.find();
+
+        return avatars;
+    }
+
+    @Post()
     @UseInterceptors(FileInterceptor('image', {
         storage: diskStorage({
             destination: './uploads',
@@ -21,22 +31,12 @@ export class AvatarsController {
         }),
         fileFilter: imageFileFilter,
     }))
-    async pictureUpload(@UploadedFile() image: any, @Param('id') id: string): Promise<any> {
-        const product = await this.productModel.findById(id);
-        console.log(product);
-        if (!product) {
-            return {
-                status: HttpStatus.NOT_FOUND,
-                message: 'Product not found!',
-            };
-        }
+    async create(@UploadedFile() image: any): Promise<any> {
+        const { } = image;
+        console.log(image);
+        // const avatar = this.avatarModel.create({
 
-        if (!image) {
-            return {
-                status: HttpStatus.NOT_FOUND,
-                message: 'Image not found!',
-            };
-        }
+        // });
 
         return {
             status: HttpStatus.OK,
