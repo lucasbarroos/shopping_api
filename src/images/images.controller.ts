@@ -1,9 +1,10 @@
 import { Controller, Get, Type } from '@nestjs/common';
 import { Param, Inject, UseInterceptors, UploadedFile, HttpStatus, Post, Res } from '@nestjs/common';
-import {  FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { Model } from 'mongoose';
 import { diskStorage } from 'multer';
 import { editFileName, imageFileFilter } from '../../utils/file_upload';
+import multer from '../../utils/multer';
 import { imageInterface } from './images.interface';
 import { join } from 'path';
 @Controller('images')
@@ -41,9 +42,9 @@ export class ImagesController {
         fileFilter: imageFileFilter,
     }))
     async create(@UploadedFile() imageReceived: any): Promise<any> {
-        const { originalname, filename, mimetype, path, size  } = imageReceived;
+        const { originalname, filename, mimetype, path, size } = imageReceived;
         const obj = {
-            originalName: originalname, 
+            originalName: originalname,
             filename,
             type: mimetype,
             path,
