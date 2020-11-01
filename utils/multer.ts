@@ -5,9 +5,8 @@ import * as multerS3 from "multer-s3";
 require("dotenv").config();
 
 const MAX_SIZE_TWO_MEGABYTES = 2 * 1024 * 1024;
-console.log(process.env.BUCKET_NAME)
 export default {
-    dest: resolve(__dirname, "..", "..", "tmp", "uploads"),
+    dest: resolve(__dirname, "..", "..", "uploads"),
     storage: multerS3({
         s3: new S3(),
         bucket: process.env.BUCKET_NAME,
@@ -29,6 +28,7 @@ export default {
     fileFilter: (req, file, cb) => {
         const allowedMimes = [
             "image/jpeg",
+            "image/jpg",
             "image/pjpeg",
             "image/png",
             "image/gif",

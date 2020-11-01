@@ -12,4 +12,4 @@ import { DatabaseModule } from '../database/database.module';
     ...productsProviders,
   ],
 })
-export class ImagesModule {}
+export class ImagesModule { }

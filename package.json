@@ -28,6 +28,7 @@
     "dotenv": "^8.2.0",
     "mongoose": "^5.10.10",
     "multer-s3": "^2.9.0",
+    "nestjs-multer-extended": "^1.4.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.5.5"
