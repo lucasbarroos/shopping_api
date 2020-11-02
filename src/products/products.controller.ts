@@ -1,4 +1,4 @@
-import { Controller, Post, Put, Get, Body, Param, Inject} from '@nestjs/common';
+import { Controller, Post, Put, Get, Body, Param, Inject } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { productInterface } from './products.interface';
 import { productDTO } from './products.dto';
@@ -18,13 +18,14 @@ export class ProductsController {
 
     @Put(':id')
     async update(@Param('id') id: string, @Body() product: productDTO): Promise<productDTO> {
-        const { name, brand, amount } = product;
-        const productUpdated = this.productModel.findOneAndUpdate({
+        const { name, brand, amount, images } = product;
+        const productUpdated = await this.productModel.findOneAndUpdate({
             _id: id,
         }, {
             name,
             brand,
             amount,
+            images,
         }, {
             new: true,
         });
@@ -33,7 +34,8 @@ export class ProductsController {
 
     @Get(':id')
     async findOne(@Param('id') id): Promise<productDTO> {
-        const product = this.productModel.findById(id);
+        const product = this.productModel.findById(id)
+            .populate('images');
         return product;
     }
 
